@@ -1,10 +1,26 @@
-function _git_branch_name
-    echo (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
-end
+# global configuration of git prompt
+set -g __fish_git_prompt_show_informative_status 1
 
-function _is_git_dirty
-    echo (command git status -s --ignore-submodules=dirty 2> /dev/null)
-end
+set -g __fish_git_prompt_showdirtystate 1
+set -g __fish_git_prompt_showuntrackedfiles 1
+set -g __fish_git_prompt_showstashstate 1
+
+set -g __fish_git_prompt_showcolorhints 1
+
+set -g __fish_git_prompt_char_stateseparator ''
+set -g __fish_git_prompt_char_stagedstate "+"
+set -g __fish_git_prompt_char_dirtystate "*"
+set -g __fish_git_prompt_char_untrackedfiles "%"
+set -g __fish_git_prompt_char_stashstate "\$"
+set -g __fish_git_prompt_char_invalidstate "#"
+set -g __fish_git_prompt_char_cleanstate ""
+
+set -g __fish_git_prompt_color_prefix brblue
+set -g __fish_git_prompt_color_suffix brblue
+set -g __fish_git_prompt_color_stagedstate brred
+set -g __fish_git_prompt_color_dirtystate bryellow
+set -g __fish_git_prompt_color_untrackedfiles blue
+set -g __fish_git_prompt_coloe_invalidstate black
 
 function _python_env_name
     if test $CONDA_DEFAULT_ENV
@@ -50,21 +66,8 @@ function fish_prompt
     set -l arrow $brpurple"»"
     set -l cwd $brblue(prompt_pwd_full)
     
-    # git info
-    if [ (_git_branch_name) ]
-        set -l parenthesis_start $brblue"("
-        set -l parenthesis_end $brblue")"
-
-        set git_info $brgreen(_git_branch_name)
-        set git_info "$parenthesis_start$git_info"
-
-        if [ (_is_git_dirty) ]
-            set -l dirty $bryellow"*"
-            set git_info "$git_info$dirty"
-        end
-
-        set git_info "$git_info$parenthesis_end"
-    end
+    # git_info
+    set -l git_info (fish_git_prompt)
 
     # print prompt
     echo -s $separator

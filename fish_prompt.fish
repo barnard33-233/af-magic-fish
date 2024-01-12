@@ -40,6 +40,10 @@ function fish_prompt
     set -l sttysizeout (string split " " (stty size))
     set -l python_env_len (string length (_python_env_name))
     set -l separator_len (math -s0 $sttysizeout[2] - $python_env_len)
+    if [ $fish_key_bindings = "fish_vi_key_bindings" ]
+        set separator_len (math -s0 $separator_len - 5)
+        # Minus 5 to fix the conflict with the symbol appears in the vi mode
+    end
 
     set -l separator $brblack(_python_env_name)(string repeat -n $separator_len "-")
   
@@ -63,6 +67,6 @@ function fish_prompt
     end
 
     # print prompt
-    echo $separator
+    echo -s $separator
     echo -n -s $cwd $git_info $normal ' ' $arrow ' ' $normal
 end

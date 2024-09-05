@@ -10,13 +10,3 @@ change:
 + conda environment
 
 ![](./look-like-this.png)
-## How to use
-
-+ without omf: copy fish_prompt.fish and fish_right_prompt.fish to your function/ folder
-+ with omf:
-```fish
-omf cd
-cd themes
-git clone (this repo)
-omf theme af-magic-fish
-```
